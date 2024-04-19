@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Title -->
+  <title>LSEG RTDS REST API</title>
+
+  <!-- Required Meta Tags Always Come First -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+
+  <!-- Google Fonts -->
+  <link href="//fonts.googleapis.com/css?family=Poppins:300,400,500,600" rel="stylesheet">
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="assets/vendor/font-awesome/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+  <link rel="stylesheet" href="assets/vendor/jquery-ui/themes/base/jquery-ui.min.css">
+  <link rel="stylesheet" href="assets/vendor/prism/prism.css">
+
+  <!-- CSS Template -->
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+</head>
+<body class="bg-white">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <nav class="col-md-4 col-lg-3 col-xl-2 bg-dark text-white duik-sidebar duik-sidebar--dark ui-autocomplete-wrapper--dark navbar-expand-md pt-0">
+        <div class="d-flex justify-content-between bg-black-soft w-100">
+        
+            <!--img class="mr-2" src="assets/img/logo-light.png" alt="RTDS REST API" style="width: 125px;"-->
+            <strong class="text-white">RTDS REST API</strong>
+            <!--
+            <span class="small">
+              <span class="badge badge-light text-space-1">v1.0.0</span>
+            </span>
+            -->
+         
+
+          <!-- Responsive Toggle Button -->
+          <button class="btn btn-link text-white pl-0 d-md-none" type="button" data-toggle="collapse" data-target="#sidebar-nav" aria-controls="sidebar-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 30 30" width="30" height="30" focusable="false">
+              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/>
+            </svg>
+          </button>
+          <!-- End Responsive Toggle Button -->
+        </div>
+
+        <!-- Header Search 
+        <div class="mb-4">
+          <input class="js-search form-control form-control-sm w-100 form-control-dark bg-white-11 text-white border-0 rounded-0" type="text" placeholder="Search..." aria-label="Search..." data-url="assets/include/json/autocomplete-data-for-documentation-search.json">
+        </div>
+        End Header Search -->
+
+        <!-- Sidebar Nav -->
+        <div class="collapse navbar-collapse" id="sidebar-nav">
+          <div class="js-scrollbar duik-sidebar-sticky duik-sidebar-sticky">
+            
+
+           <a class="nav-link" href="#" onclick="setHomeView()"><h5 class="duik-sidebar__heading text-white ">Home</h5></a>
+
+            <h5 class="duik-sidebar__heading text-white ">Services</h5>
+            <ul class="duik-sidebar__nav" data-bind="foreach: realtimeservices">
+              <li class="duik-sidebar__item"><a class="duik-sidebar__link" href="#"  data-bind="text: name, click: setServiceView.bind($data)"></a>
+                <!-- ko if: state -->
+                  <i class="fas fa-arrow-up text-success"></i>
+                <!-- /ko -->
+                <!-- ko ifnot: state -->
+                <i class="fas fa-arrow-down text-danger"></i>
+                <!-- /ko -->
+              </li>             
+            </ul>
+            <h5 class="duik-sidebar__heading text-white ">Users</h5>
+            <ul class="duik-sidebar__nav" data-bind="foreach: realtimeusers">
+              <li class="duik-sidebar__item"><a class="duik-sidebar__link" href="#" data-bind="text: name, click: setUserView.bind($data)"></a>
+            </ul>
+            <h5 class="duik-sidebar__heading text-white ">Mounts</h5>
+            <ul class="duik-sidebar__nav" data-bind="foreach: mounts">
+              <li class="duik-sidebar__item"><a class="duik-sidebar__link" href="#" data-bind="text: mountName, click: setMountView.bind($data)"></a>
+            </ul>
+            
+
+          </div>
+        </div>
+        <!-- End Sidebar Nav -->
+
+        <hr class="mt-0 mt-md-3 mb-4">
+
+      
+      </nav>
+      
+      <!-- End Sidebar -->
+
+      <main class="ml-sm-auto col-md-8 col-lg-9 col-xl-10 px-4 pt-4">
+        <div class="row pt-3">
+          <!-- Content Nav 
+         
+           End Content Nav -->
+
+          <!-- Home Content -->
+          <div class="col-xl-10 order-xl-1 duik-content-2 border-bottom" id="home_div" >
+            <div class="border-bottom mb-7">
+              <h2 class="font-weight-bold">Process</h2>
+              <p class="lead mb-5"></p>
+
+              <div class="row">                
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-server fa-3x text-white"></i></div>
+                    <div class="spinner-border text-success mb-2 mr-2" role="status" data-bind="hidden: isProcessLoaded">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="card-body pt-0 text-white" data-bind="hidden: isProcessLoading">
+                      <h4 class="h5 mb-2 text-white" data-bind="text: rtdsVersion"></h4>
+                      <div class="container">
+                        <div class="row">
+                         
+                            <strong class="col-md-3">Server Time:</strong><span class="col-md-4" data-bind="text: serverTime"></span>
+                         
+                       </div>
+                       <div class="row">
+                         
+                            <strong class="col-md-3">System Release:</strong><span class="col-md-4" data-bind="text: systemRelease"></span>
+                          
+                       </div>
+                       
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+              
+      
+                
+              </div>
+            </div>
+
+            <!-- About -->
+            <div id="rtds-services" class="mb-7">
+              <h2 class="font-weight-bold">Services</h2>
+              <p class="lead mb-5"></p>
+              <div class="spinner-border text-success mb-2 mr-2" role="status" data-bind="hidden: isServiceLoaded">
+                  <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="row" data-bind="foreach: realtimeservices, hidden: isServiceLoading">                
+              <!-- ko if: state -->
+                  <div class="col-md-4 mb-5">
+                    <div class="card p-3 border-0 shadow bg-success">
+                      <div class="card-header border-0"><i class="fas fa-arrow-circle-up fa-3x text-white"></i></div>
+                      <div class="card-body pt-0 text-white">
+                      <h5 class="text-white"><span data-bind="text: name"></span></h5>
+                      </div>
+                    </div>
+                  </div>
+              <!-- /ko -->
+              <!-- ko ifnot: state -->
+              <div class="col-md-4 mb-5">
+                <div class="card p-3 border-0 shadow bg-danger">
+                  <div class="card-header border-0"><i class="fas fa-arrow-circle-down fa-3x text-white"></i></div>
+                  <div class="card-body pt-0 text-white">
+                  <h5 class="text-white"><span data-bind="text: name"></span></h5>
+                  </div>
+                </div>
+              </div>
+          <!-- /ko -->
+                
+      
+                
+      
+                
+              </div>
+
+
+            </div>
+            <!-- End About -->
+
+            <hr class="mt-7 mb-4">
+
+            <!-- What’s Included -->
+            <div id="rtds-users" class="mb-7">
+              <h2 class="font-weight-bold">Users</h2>
+              <p class="lead mb-5"></p>
+              <div class="spinner-border text-success mb-2 mr-2" role="status" data-bind="hidden: isUserLoaded">
+                  <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="row" data-bind="foreach: realtimeusers, hidden: isUserLoading">                
+             
+                  <div class="col-md-4 mb-5">
+                    <div class="card p-3 border-0 shadow bg-primary">
+                      <div class="card-header border-0"><i class="fas fa-user fa-3x text-white"></i></div>
+                      <div class="card-body pt-0 text-white">
+                      <h5 class="text-white"><span data-bind="text: name"></span></h5>
+                      Channels: <span data-bind="text: connections"></span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+           
+
+            </div>
+            <!-- End What’s Included -->
+
+            <hr class="mt-7 mb-4">
+
+            <!-- Getting Started -->
+            <div id="rtds-mounts" class="mb-7">
+              <h2 class="font-weight-bold">Mounts</h2>
+              <p class="lead mb-5"></p>
+              <div class="spinner-border text-success mb-2 mr-2" role="status" data-bind="hidden: isMountLoaded">
+                  <span class="sr-only">Loading...</span>
+              </div>
+
+              <div class="row" data-bind="foreach: mounts, hidden: isMountLoading">                
+             
+                  <div class="col-md-4 mb-5">
+                    <div class="card p-3 border-0 shadow bg-dark">
+                      <div class="card-header border-0"><i class="fas fa-link fa-3x text-white"></i></div>
+                      <div class="card-body pt-0 text-white">
+                      <h5 class="text-white"><span data-bind="text: mountName"></span></h5>
+                      <span data-bind="text: userName"></span> (<span data-bind="text: position"></span>)<br/>
+                      Items: <span data-bind="text: itemCount"></span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+             
+
+             
+
+             
+
+            </div>
+
+
+           
+           
+          </div>
+          <!-- End Home Content -->
+
+           <!-- Service Content -->
+           <div class="col-xl-10 order-xl-1 duik-content-2" id="service_div" >            
+            <div class="border-bottom mb-7">
+              <h2 class="font-weight-bold" data-bind="text: serviceName"></h2>
+              <p class="lead mb-5"></p>
+
+              <div class="row">          
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-signal fa-3x text-white"></i></div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12"><h3 class="text-white"><b>Attributes</b></h3></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right"><b>State:</b></div>
+                          <div class="col-md-2 text-white" id="statediv" data-bind="text: serviceState">
+                            
+                          </div>
+                          <div class="col-md-2 text-white text-md-right"><b>Sevice ID:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: serviceID"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right"><b>QoS:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: qos"></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Dictionary:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: dictionary"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right"><b>Domain:</b></div>
+                          <div class="col-md-10 text-white" data-bind="foreach: domains"> 
+                            
+                                <span class="badge badge-secondary" data-bind="text: $data"></span>&nbsp;                              
+                            
+                            
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">          
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-list fa-3x text-white"></i></div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12"><h3 class="text-white"><b>Items</b></h3></div>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-black">
+                                <h3 class="h6 mb-0 text-center  text-white">Total</h3>
+                              </div>
+                              <div class="card-body text-center h3" id="totaldiv" data-bind="text: total">
+                                
+                              </div>
+                            </div>
+                          </div>      
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-success">
+                                <h3 class="h6 mb-0 text-center text-white">Active</h3>
+                              </div>
+                              <div class="card-body text-center h3" id="activediv" data-bind="text: active">
+                                
+                              </div>
+                            </div>
+                          </div>    
+                          
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-danger">
+                                <h3 class="h6 mb-0 text-center text-white">Stale</h3>
+                              </div>
+                              <div class="card-body text-center h3" id="stalediv" data-bind="text: stale">
+                                
+                              </div>
+                            </div>
+                          </div>  
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-warning">
+                                <h3 class="h6 mb-0 text-center text-white">Pending</h3>
+                              </div>
+                              <div class="card-body text-center h3" id="pendingdiv" data-bind="text: pending">
+                                
+                              </div>
+                            </div>
+                          </div>  
+
+                        </div>                        
+            
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-chart-line fa-3x text-white"></i></div>
+                    <span class="text-md-right"><button type="button" class="btn btn-info btn-pill mb-2 mr-2" onclick="clearServiceStatData()">Clear</button></span>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12" id="servicechart"></div>
+                        </div>
+                        
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+           
+
+          
+            
+          
+          </div>
+          <!-- End Service Content -->
+
+          <!-- User Content-->
+          <div class="col-xl-10 order-xl-1 duik-content-2" id="user_div">
+            <div class="border-bottom mb-7">
+              <h2 class="font-weight-bold" data-bind="text: userName"></h2>
+              <p class="lead mb-5"></p>
+
+              <div class="row">          
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-signal fa-3x text-white"></i></div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12"><h3 class="text-white"><b>Attributes</b></h3></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right"><b>Channels:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: channels" id="channelsid">
+                            
+                          </div>
+                          <div class="col-md-2 text-white text-md-right"><b>Max Priority Class:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: maxPriorityClass"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" data-toggle="tooltip" data-placement="top" data-original-title="Aggregate Item Limit"><b>Aggr Limit:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: aggregateItemLimit"></div>
+                          <div class="col-md-2 text-white text-md-right" data-toggle="tooltip" data-placement="top" data-original-title="Item Limit Per Mount"><b>Limit Per Mount:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: itemLimitPerMount"  ></div>
+                        </div>
+                        <br/>
+                        
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">          
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-list fa-3x text-white"></i></div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12"><h3 class="text-white"><b>Data Streams</b></h3></div>
+                        </div>
+                        
+                        <div class="row">
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: opens" id="opensid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Normal Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: normalOpens" id="normalopensid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Snapshot</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: snapshotOpens" id="snapshotopensid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">View Requests</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: viewRequests" id="viewrequestsid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Recover Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: recoverableOpens" id="recoverableopensid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">NonRecover Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: nonRecoverableOpens" id="nonrecoverableopensid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Recover Closes</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: recoverableCloses" id="recoverableclosesid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">NonRecover Closes</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: nonRecoverableCloses" id="nonrecoverableclosesid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-black">
+                                <h3 class="h6 mb-0 text-center  text-white">Total</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: user_total" id="totalid">
+                                
+                              </div>
+                            </div>
+                          </div>      
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-success">
+                                <h3 class="h6 mb-0 text-center text-white">Active</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: user_active" id="activeid">
+                                
+                              </div>
+                            </div>
+                          </div>    
+                          
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-danger">
+                                <h3 class="h6 mb-0 text-center text-white">Stale</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: user_stale" id="staleid">
+                                
+                              </div>
+                            </div>
+                          </div>  
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-warning">
+                                <h3 class="h6 mb-0 text-center text-white">Pending</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: user_pending" id="pendingid">
+                                
+                              </div>
+                            </div>
+                          </div>  
+
+                        </div>                        
+            
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-chart-line fa-3x text-white"></i></div>
+                    <span class="text-md-right"><button type="button" class="btn btn-info btn-pill mb-2 mr-2" onclick="clearUserStatData()">Clear</button></span>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12" id="userchart"></div>
+                        </div>
+                        
+                      </div>
+                  </div>
+                </div>
+              </div>
+            
+
+
+            </div>
+
+           
+
+          
+            
+          
+          </div>
+
+          <!-- End User Content-->
+
+          <!-- Mount Content-->
+          <div class="col-xl-10 order-xl-1 duik-content-2" id="mount_div">
+            <div class="border-bottom mb-7">
+              <h2 class="font-weight-bold" data-bind="text: mountInfo"></h2>
+              
+              <p class="lead mb-5"></p>
+
+              <div class="row">          
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-link fa-3x text-white"></i></div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12"><h3 class="text-white"><b>Attributes</b></h3></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right"><b>Mount Time:</b></div>
+                          <div class="col-md-4 text-white" data-bind="text: mountTime"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right"><b>Username:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountUsername" ></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Position:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountPosition" ></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>Application Key:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountAppKey" ></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Application Name:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountAppName"  ></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>Host Name:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountHostName" ></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Version:</b></div>
+                          <div class="col-md-2 text-white small" data-bind="text: mountVersion" ></div>
+                        </div>
+                        <br/>
+                        
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+
+              
+          
+
+              <div class="row">          
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-list fa-3x text-white"></i></div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12"><h3 class="text-white"><b>Data Streams</b></h3></div>
+                        </div>
+                        
+                        <div class="row">
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountOpens" id="mountOpens_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Normal Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountNormalOpens" id="mountNormalopens_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Snapshot</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountSnapshotOpens" id="mountSnapshotopens_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">View Requests</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountViewRequests" id="mountViewrequests_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Recover Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountRecoverableOpens" id="mountRecoverableopens_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">NonRecover Opens</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountNonRecoverableOpens" id="mountNonrecoverableopens_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">Recover Closes</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountRecoverableCloses" id="mountRecoverablecloses_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-secondary">
+                                <h3 class="h6 mb-0 text-center  text-white">NonRecover Closes</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountNonRecoverableCloses" id="mountNonrecoverablecloses_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-black">
+                                <h3 class="h6 mb-0 text-center  text-white">Total</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountTotal" id="mountTotal_id">
+                                
+                              </div>
+                            </div>
+                          </div>      
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-success">
+                                <h3 class="h6 mb-0 text-center text-white">Active</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountActive" id="mountActive_id">
+                                
+                              </div>
+                            </div>
+                          </div>    
+                          
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-danger">
+                                <h3 class="h6 mb-0 text-center text-white">Stale</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountStale" id="mountStale_id">
+                                
+                              </div>
+                            </div>
+                          </div>  
+
+                          <div class="col-md-3">
+                            <div class="card">
+                              <div class="card-header bg-warning">
+                                <h3 class="h6 mb-0 text-center text-white">Pending</h3>
+                              </div>
+                              <div class="card-body text-center h3" data-bind="text: mountPending" id="mountPending_id">
+                                
+                              </div>
+                            </div>
+                          </div>  
+
+                        </div>                        
+            
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">          
+      
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-network-wired fa-3x text-white"></i></div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12"><h3 class="text-white"><b>Network</b></h3></div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right"><b>Connect Type:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountConnectType" ></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Connect Time:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountConnectTime" ></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>Max Frag Size:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountMaxFragmentSize" ></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Compression Type:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountCompressionType"  ></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>TCP Send Buf Size:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountTcpSendBufSize" ></div>
+                          <div class="col-md-2 text-white text-md-right"><b>TCP Recv Buf Size:</b></div>
+                          <div class="col-md-2 text-white small" data-bind="text: mountTcpRecvBufSize" ></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>Guaranteed Output Buffer:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountGuaranteedOutputBuffers" ></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Max Output Buffer:</b></div>
+                          <div class="col-md-2 text-white small" data-bind="text: mountMaxOutputBuffers" ></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>Current Buffer Usage:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountCurrentBufferUsage" id="mountCurrentBufferUsage_id"></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Peak Buffer Usage:</b></div>
+                          <div class="col-md-2 text-white small" data-bind="text: mountPeakBufferUsage" id="mountPeakBufferUsage_id" ></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>Pings Sent:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountPingsSent" id="mountPingsSent_id"></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Pings Received:</b></div>
+                          <div class="col-md-2 text-white small" data-bind="text: mountPingsReceived" id="mountPingsReceived_id"></div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-2 text-white text-md-right" ><b>Packets Sent:</b></div>
+                          <div class="col-md-2 text-white" data-bind="text: mountPacketsSent" id="mountPacketsSent_id"></div>
+                          <div class="col-md-2 text-white text-md-right"><b>Packets Received:</b></div>
+                          <div class="col-md-2 text-white small" data-bind="text: mountPacketsReceived" id="mountPacketsReceived_id" ></div>
+                        </div>
+
+
+                        <br/>
+                        
+                      </div>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-5">
+                  <div class="card p-3 border-0 shadow bg-primary">
+                    <div class="card-header border-0"><i class="fas fa-chart-line fa-3x text-white"></i></div>
+                    <span class="text-md-right"><button type="button" class="btn btn-info btn-pill mb-2 mr-2" onclick="clearMountStatData()">Clear</button></span>
+
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12" id="mountchart"></div>
+                        </div>
+                        
+                      </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+          <!-- End Mount Content-->
+
+
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="small py-4">
+          <div class="row">
+            <!-- Copyright -->
+            <div class="col-md-6 text-center text-dark text-md-left mb-3 mb-md-0">
+              &copy; 2024 <a class="text-dark" href="https://lseg.com">LSEG</a>. All Rights Reserved.
+            </div>
+            <!-- End Copyright -->
+
+            <!-- Social Icons -->
+            <div class="col-md-6 col-xl-4 align-self-center">
+              <ul class="list-inline text-center text-md-right mb-0">
+                <li class="list-inline-item mx-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Github">
+                  <a class="text-dark" target="_blank" href="https://github.com/htmlstreamofficial/">
+                    <i class="fab fa-github"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item mx-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
+                  <a class="text-dark" target="_blank" href="https://www.facebook.com/htmlstream">
+                    <i class="fab fa-facebook"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item mx-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Instagram">
+                  <a class="text-dark" target="_blank" href="https://www.instagram.com/htmlstream">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item mx-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+                  <a class="text-dark" target="_blank" href="https://twitter.com/htmlstream">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item ml-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Dribbble">
+                  <a class="text-dark" target="_blank" href="https://dribbble.com/htmlstream">
+                    <i class="fab fa-dribbble"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <!-- End Social Icons -->
+          </div>
+        </footer>
+        <!-- End Footer -->
+      </main>
+    </div>
+  </div>
+
+  <!-- Go to Top -->
+  <a class="js-go-to duik-go-to" href="javascript:;">
+    <span class="fa fa-arrow-up duik-go-to__inner"></span>
+  </a>
+  <!-- End Go to Top -->
+
+  <!-- JS Global Compulsory -->
+  <script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+  <script src="assets/vendor/popper.js/dist/umd/popper.min.js"></script>
+  <script src="assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <!-- JS Implementing Plugins -->
+  <script src="assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="assets/vendor/jquery-ui/jquery-ui.core.min.js"></script>
+  <script src="assets/vendor/jquery-ui/ui/widgets/menu.js"></script>
+  <script src="assets/vendor/jquery-ui/ui/widgets/mouse.js"></script>
+  <script src="assets/vendor/jquery-ui/ui/widgets/autocomplete.js"></script>
+  <script src="assets/vendor/prism/prism.js"></script>
+  <script src="assets/vendor/knockout/knockout-3.5.1.debug.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <!-- JS -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/autocomplete.js"></script>
+  <script src="assets/js/custom-scrollbar.js"></script>
+  <script src="assets/js/home.js"></script>
+
+</body>
+</html>
